@@ -1,0 +1,51 @@
+import random
+random.seed(37) # I like to set the random seed at 37!
+
+
+def fluctuation():
+ return (random.normalvariate(0.0, 0.0125))
+
+
+StockPrice = 100.0 # StockPrice starts at $100.00
+StockHistory = [] # Start with an empty list
+Day_Min_7=0.
+Day_Max_7=0.
+Day_Ave_7=0.
+
+print(format("Day",">4") ,format("Price","^7"),format("7DayMin","^10"),format("7DayMax","^10"),format("7DayAve","^10"),format("50DayAve","^10"))
+print('='*50)
+
+
+
+for i in range(100):
+
+    StockPrice *= (1 + fluctuation())# Calculate the next StockPrice
+    StockHistory.append(StockPrice)# To append StockPrice to the end of the list
+    
+    if(len(StockHistory) >= 7): # If the list contains more than 6 records
+        Day_Min_7 = str(round(min(StockHistory[-7:]), 3)).ljust(7,'0') # Calculate the 7DayMin, round it, change the data type to str, fill 0 to the right
+        Day_Max_7 = str(round(max(StockHistory[-7:]), 3)).ljust(7,'0') # Calculate the 7DayMax, round it, change the data type to str, fill 0 to the right
+        Day_Ave_7 = str(round(sum(StockHistory[-7:])/7 , 3)).ljust(7,'0') # Calculate the 7DayAve, round it, change the data type to str, fill 0 to the right
+    else: Day_Min_7,Day_Max_7,Day_Ave_7='N/A','N/A','N/A'
+            
+    
+    if(len(StockHistory) >= 50): # If the list contains more than or equal 50 records
+         
+        Day_Ave_50 = sum(StockHistory[:])/50  # Calculate the 7DayMin 
+        
+        if(StockPrice < Day_Ave_50): # If the StockPrice drops below Day_Ave_50
+            Day_Ave_50 = (str(round(Day_Ave_50, 3)).ljust(7,'0') + ' ***') # round Day_Ave_50, change the data type to str, fill 0 to the right, add ***
+        else: Day_Ave_50  = str(round(Day_Ave_50, 3)).ljust(7,'0') # round Day_Ave_50, change the data type to str, fill 0 to the right
+            
+        StockHistory.pop(0)# delete the first record which is indexed by zero
+        
+    else: Day_Ave_50 = ('N/A: ' + str(i+1) + ' record only!')
+        
+    
+    print(format(i+1,">4"),"{:.3f}".format(StockPrice,"^7"),'{:^10}'.format(Day_Min_7),'{:^10}'.format(Day_Max_7),'{:<10}'.format(Day_Ave_7),'{:<10}'.format(Day_Ave_50))                                           
+    
+    
+    
+    
+    
+
